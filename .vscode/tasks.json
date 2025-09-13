@@ -1,16 +1,49 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "type": "npm",
-            "script": "compile",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": ["$tsc-watch"],
-            "label": "npm: compile",
-            "detail": "webpack"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "compile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc-watch"],
+      "label": "npm: compile",
+      "detail": "webpack"
+    },
+    {
+      "type": "shell",
+      "command": "powershell.exe -NoProfile -Command \"vsce package; $latest = Get-ChildItem -Filter 'text-comparator-*.vsix' | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($null -ne $latest) { $timestamp = Get-Date -Format 'yyyyMMddHHmmss'; Copy-Item $latest.FullName -Destination \"text-comparator-$timestamp.vsix\" }\"",
+      "label": "package extension",
+      "dependsOn": ["npm: compile"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "type": "shell",
+      "command": "powershell.exe -NoProfile -Command \"$latest = Get-ChildItem -Filter 'text-comparator-*-*.vsix' | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($null -ne $latest) { Write-Host \"Installing $($latest.Name)\"; code --install-extension $latest.FullName } else { $latest = Get-ChildItem -Filter 'text-comparator-*.vsix' | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($null -ne $latest) { Write-Host \"Installing $($latest.Name)\"; code --install-extension $latest.FullName } }\"",
+      "label": "install extension",
+      "dependsOn": ["package extension"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "compile and install",
+      "dependsOrder": "sequence",
+      "dependsOn": ["npm: compile", "package extension", "install extension"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
 }

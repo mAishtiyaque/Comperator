@@ -1,16 +1,18 @@
 {
+  "publisher": "maishtiyaque",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maishtiyaque/text-comparator.git"
+  },
   "name": "text-comparator",
   "displayName": "Text Comparator",
   "description": "Compare and highlight differences between text files",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "engines": {
     "vscode": "^1.60.0"
   },
   "categories": [
     "Other"
-  ],
-  "activationEvents": [
-    "onCommand:text-comparator.compare"
   ],
   "main": "./dist/extension.js",
   "contributes": {

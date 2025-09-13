@@ -1,0 +1,7 @@
+This is a sample text file.
+It contains multiple lines of text.
+Some lines will be the same in both files.
+This is a new line added to the second file.
+The quick brown fox jumps over the lazy cat.
+This is the end of the second file.
+ishti
